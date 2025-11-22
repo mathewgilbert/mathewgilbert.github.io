@@ -1,23 +1,14 @@
 #!/bin/bash
 
-COLOR="\e[38;2;64;114;199m"
-RESET="\e[0m"
+# Matikan pesan login
+touch ~/.hushlogin
 
-printf "${COLOR}"
-cat << EOF
-                                             ..     
-         :.                      ..::^^~!!!~^.      
-          ^~.         .:^^~~!!2222????2!^.          
-        .  ^2~.       !?22222222222!^.              
-        ~!: :22~.    :22222222?22~:.             _____ _           _            ___  ____      
-        .2?2~!222~.  !22222!~^:.                |  ___(_)_ __  ___| |__  _   _ / _ \/ ___|  
-         ^222222222~^22222!                     | |_  | | '_ \/ __| '_ \| | | | | | \___ \     
-   ....  .2222222222222222.     finshy          |  _| | | | | \__ | | | | |_| | |_| |___) |    
-    .:~222222222222222222~    by @mathew        |_|   |_|_| |_|___|_| |_|\__, |\___/|____/     
-        .^222222222222222                       v1.0                     |___/                
-   ..::^^~22222222222222:                           
-..:^~~!!!22222222?2222?~                           
-             ....::^^~~                             
-                                                    
-EOF
-printf "${RESET}"
+# Hapus motd dan issue (hanya jika root)
+[[ $EUID -eq 0 ]] && rm -f /etc/motd /etc/issue
+
+# Download finshy ke home user
+wget -qO ~/.finshy.sh https://raw.githubusercontent.com/mathewgilbert/FinshyOS/refs/heads/main/finshy.sh
+chmod +x ~/.finshy.sh
+
+# Tambahkan ke ~/.bashrc di baris paling bawah
+grep -qxF "bash ~/.finshy.sh" ~/.bashrc || echo "bash ~/.finshy.sh" >> ~/.bashrc
